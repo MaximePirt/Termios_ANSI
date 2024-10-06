@@ -13,11 +13,35 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include "../libft/include/libft.h"
+
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
 # endif
 #define MAX_32_BIT 4294967295
+
+// Fonctions pour déplacer le curseur
+#define ANSI_UP "\033[A"
+#define ANSI_DOWN "\033[B"
+#define ANSI_RIGHT "\033[C"
+#define ANSI_LEFT "\033[D"
+
+# define CURSOR_UP "\033[%dA"
+# define CURSOR_DOWN "\033[%dB"
+# define CURSOR_LEFT "\033[%dD"
+# define CURSOR_RIGHT "\033[%dC"
+# define CURSOR_NLINE "\033[E"
+# define CURSOR_PLINE "\033[F]"
+# define CURSOR_ERA "\033[2K"
+
+# define L_ARROW 'D'
+# define R_ARROW 'C'
+# define U_ARROW 'A'
+# define D_ARROW 'B'
+
+# define CTRL_D 4
+# define CTRL_C 3
 
 // ########################################################
 // #						LIBFT						  #

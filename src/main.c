@@ -4,9 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4096
-# endif
+
 
 void	get_cursor_position(t_term *term)
 {
@@ -56,27 +54,7 @@ void reset_terminal_mode(struct termios *old_attrs) {
     tcsetattr(STDIN_FILENO, TCSANOW, old_attrs);
 }
 
-// Fonctions pour déplacer le curseur
-#define ANSI_UP "\033[A"
-#define ANSI_DOWN "\033[B"
-#define ANSI_RIGHT "\033[C"
-#define ANSI_LEFT "\033[D"
 
-# define CURSOR_UP "\033[%dA"
-# define CURSOR_DOWN "\033[%dB"
-# define CURSOR_LEFT "\033[%dD"
-# define CURSOR_RIGHT "\033[%dC"
-# define CURSOR_NLINE "\033[E"
-# define CURSOR_PLINE "\033[F]"
-# define CURSOR_ERA "\033[2K"
-
-# define L_ARROW 'D'
-# define R_ARROW 'C'
-# define U_ARROW 'A'
-# define D_ARROW 'B'
-
-# define CTRL_D 4
-# define CTRL_C 3
 
 void move_cursor(const char *direction) {
     printf("%s", direction);
@@ -86,19 +64,18 @@ void move_cursor(const char *direction) {
 int	process_signals(char c)
 {
 	if (c == CTRL_D)
-	{
 		return (1);
-	}
 	else if (c == CTRL_C)
-	{
 		return (1);
-	}
 	return (0);
 }
 
 int process_action(t_minishell *minishell, char *new)
 {
-	printf("ahahah");
+  (void)minishell;
+  (void)new;
+  
+	ft_putstr_fd("ahahah", 1);
 	return (0);
 }
 
@@ -107,7 +84,6 @@ int main() {
     struct termios old_attrs;
 	ssize_t bits;
 	char buffer[32];
-    char key;
 	t_minishell *minishell;
 	int signal;
 
