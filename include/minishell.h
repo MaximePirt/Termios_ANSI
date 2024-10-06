@@ -16,6 +16,8 @@
 #include "../libft/include/libft.h"
 
 
+#define PROMPT_LEN 15
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
 # endif

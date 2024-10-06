@@ -18,7 +18,7 @@ NAME					= minishell
 #									SOURCES									#
 #############################################################################
 
-SRCS			= main.c memory_alloc.c
+SRCS			= main.c memory_alloc.c erase_put.c move_cursor.c term_utils.c
 
 #############################################################################
 #									FOLDERS									#

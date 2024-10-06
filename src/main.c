@@ -54,13 +54,6 @@ void reset_terminal_mode(struct termios *old_attrs) {
     tcsetattr(STDIN_FILENO, TCSANOW, old_attrs);
 }
 
-
-
-void move_cursor(const char *direction) {
-    printf("%s", direction);
-    fflush(stdout);
-}
-
 int	process_signals(char c)
 {
 	if (c == CTRL_D)
@@ -74,8 +67,8 @@ int process_action(t_minishell *minishell, char *new)
 {
   (void)minishell;
   (void)new;
-  
-	ft_putstr_fd("ahahah", 1);
+
+	ft_putstr_fd(new, 1);
 	return (0);
 }
 
