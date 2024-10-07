@@ -1,10 +1,4 @@
-#include <termios.h>
 #include "minishell.h"
-#include "struct.h"
-#include <stdio.h>
-#include <unistd.h>
-
-
 
 void	get_cursor_position(t_term *term)
 {

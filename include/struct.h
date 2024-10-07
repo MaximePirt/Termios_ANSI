@@ -32,56 +32,6 @@ typedef struct s_term
 }		t_term;
 
 // ########################################################
-// #						HISTORY						  #
-// ########################################################
-
-typedef struct s_history
-{
-	char				*cmd;
-	struct s_history	*older;
-	struct s_history	*newer;
-}		t_history;
-
-// ########################################################
-// #				DICTIONARY	- BST					  #
-// ########################################################
-
-typedef struct s_dict
-{
-	int				bst_size;
-	int				position;
-	char			*key;
-	char			*value;
-	struct s_dict	*left_branch;
-	struct s_dict	*right_branch;
-	struct s_dict	*parent;
-}					t_dict;
-
-
-// ########################################################
-// #					AUTOCOMPLETION					  #
-// ########################################################
-
-typedef struct s_completion
-{
-//	char	*cmd;
-//	char	*path;		TODO: Not used???
-	int		check_len;
-	int		tab_count;
-	int		print_line;
-}			t_completion;
-
-// ########################################################
-// #						CD_PATHS					  #
-// ########################################################
-
-typedef struct s_dirinfo
-{
-	char	*path;
-	char	*old_path;
-
-}			t_dirinfo;
-// ########################################################
 // #						MINISHELL					  #
 // ########################################################
 
@@ -92,20 +42,8 @@ typedef struct s_cache
 
 typedef struct s_minishell
 {
-	t_cache			*cache;
-	t_history		*history;
 	t_term			*term;
-	t_completion	*completion;
-	t_dict			*dict;
-	t_dict			*tab_dict;
-	t_dirinfo		*dirinfo;
     char            **input;
-	char			**env;
-	char			*starting_path;
-	int				exit_code;
-	unsigned int	history_pos;
-	unsigned int	history_size;
-	struct s_cmd	*current_cmd;
 }		t_minishell;
 
 #endif

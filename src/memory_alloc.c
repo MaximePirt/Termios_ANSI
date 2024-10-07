@@ -13,22 +13,6 @@
 #include "minishell.h"
 
 /**
- * @brief Alloc cache structure
- *
- * @param t_minishell *minishell
- * @return int 0 on success, 1 on failure
- */
-
-
-/**
- * @brief Alloc history structure
- *
- * @param t_minishell *minishell
- * @return int 0 on success, 1 on failure
- */
-
-
-/**
  * @brief Alloc term structure
  *
  * @param t_minishell *minishell
@@ -39,8 +23,6 @@ static int	alloc_term(t_minishell *minishell)
 	minishell->term = calloc(1, sizeof(t_term));
 	if (!minishell->term)
 	{
-		free(minishell->history);
-		free(minishell->cache);
 		free(minishell);
 		return (1);
 	}
@@ -65,8 +47,6 @@ t_minishell	*alloc_minishell(void)
 	minishell = calloc(1, sizeof(t_minishell));
 	if (!minishell)
 		return (NULL);
-	minishell->exit_code = 0;
-	minishell->current_cmd = NULL;
 	if (alloc_term(minishell))
 		return (NULL);
 	minishell->input = calloc(1, sizeof(char *));
