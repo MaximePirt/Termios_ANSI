@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 #include "../libft/include/libft.h"
+#include "struct.h"
+#include "utils.h"
 
 
 #define PROMPT_LEN 15

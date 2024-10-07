@@ -63,12 +63,44 @@ int	process_signals(char c)
 	return (0);
 }
 
+void	interpret_escape_sequence(t_minishell *minishell, char *new)
+{
+	if (new[1] == '[')
+	{
+		if (new[2] == U_ARROW)
+			move_cursor_up(minishell);
+		else if (new[2] == D_ARROW)
+			move_cursor_down(minishell);
+		else if (new[2] == R_ARROW)
+			move_cursor_right(minishell);
+		else if (new[2] == L_ARROW)
+			move_cursor_left(minishell);
+	}
+}
+
 int process_action(t_minishell *minishell, char *new)
 {
-  (void)minishell;
-  (void)new;
-
+	if (new[0] == '\033')
+    {
+        interpret_escape_sequence(minishell, new);
+        return (0);
+	}
+    else if (strcmp(new, " ") == 0)
+    {
+    	ft_printf("vla cols : %d\n", minishell->term->rows);
+        return (0);
+    }
 	ft_putstr_fd(new, 1);
+	minishell->input = ft_tabjoin(minishell->input,
+				ft_utf8_split_chars(new));
+    minishell->term->cols++;
+    if (minishell->term->cols >= minishell->term->ws_cols)
+	{
+		minishell->term->cols = 1;
+		minishell->term->rows++;
+	}
+	minishell->term->rows = (ft_tablen((const char **)minishell->input) + PROMPT_LEN)
+		/ minishell->term->ws_cols + minishell->term->begin_rows;
 	return (0);
 }
 
@@ -84,7 +116,7 @@ int main() {
     // Configuration du mode raw pour la saisie clavier
     set_raw_mode(&old_attrs);
 
-    printf("Programme lancer\n");
+    ft_putstr_fd("1234567891234 :", 1);
     while (1) {
 		get_terminal_size(minishell->term);
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
