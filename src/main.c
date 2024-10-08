@@ -87,7 +87,7 @@ int process_action(t_minishell *minishell, char *new)
 	}
     else if (strcmp(new, " ") == 0)
     {
-    	ft_printf("vla cols : %d\n", minishell->term->rows);
+    	printf("vla cols : %u et rows %u\n", minishell->term->cols, minishell->term->rows);
         return (0);
     }
 	ft_putstr_fd(new, 1);
@@ -96,11 +96,12 @@ int process_action(t_minishell *minishell, char *new)
     minishell->term->cols++;
     if (minishell->term->cols >= minishell->term->ws_cols)
 	{
+      	ft_putstr_fd("\033[1@\n", 1);
 		minishell->term->cols = 1;
 		minishell->term->rows++;
 	}
-	minishell->term->rows = (ft_tablen((const char **)minishell->input) + PROMPT_LEN)
-		/ minishell->term->ws_cols + minishell->term->begin_rows;
+//	minishell->term->rows = (ft_tablen((const char **)minishell->input) + PROMPT_LEN)
+//		/ minishell->term->ws_cols + minishell->term->begin_rows;
 	return (0);
 }
 

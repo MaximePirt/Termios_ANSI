@@ -46,8 +46,9 @@ static int	alloc_term(t_minishell *minishell)
 	}
 	get_terminal_size(minishell->term);
 	minishell->term->cols = PROMPT_LEN + 1;
-	minishell->term->rows = 0;
 	minishell->term->begin_rows = 0;
+    minishell->term->rows = 0;
+//    ft_printf("\033[1;34m Begin rows : %d\n\033[0m", minishell->term->begin_rows);
 	return (0);
 }
 
