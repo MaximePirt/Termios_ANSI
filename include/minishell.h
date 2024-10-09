@@ -93,4 +93,7 @@ void	get_terminal_size(t_term *term);
 
 t_minishell	*alloc_minishell(void);
 
+//
+void put_in_string(t_minishell *minishell, char *new);
+
 #endif

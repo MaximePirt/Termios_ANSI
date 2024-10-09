@@ -80,6 +80,8 @@ void	interpret_escape_sequence(t_minishell *minishell, char *new)
 
 int process_action(t_minishell *minishell, char *new)
 {
+  	unsigned int	input_len = (unsigned int)ft_tablen((const char **)minishell->input);
+
 	if (new[0] == '\033')
     {
         interpret_escape_sequence(minishell, new);
@@ -90,13 +92,19 @@ int process_action(t_minishell *minishell, char *new)
     	printf("vla cols : %u et rows %u\n", minishell->term->cols, minishell->term->rows);
         return (0);
     }
+	if ((minishell->term->rows - minishell->term->begin_rows == 0 && minishell->term->cols - PROMPT_LEN < input_len + 1 )||
+        (minishell->term->rows - minishell->term->begin_rows != 0 &&  (minishell->term->rows * minishell->term->ws_cols - 1) - PROMPT_LEN + minishell->term->cols < input_len))
+	{
+      	put_in_string(minishell, new);
+		return (0);
+     }
 	ft_putstr_fd(new, 1);
 	minishell->input = ft_tabjoin(minishell->input,
 				ft_utf8_split_chars(new));
     minishell->term->cols++;
     if (minishell->term->cols >= minishell->term->ws_cols)
 	{
-      	ft_putstr_fd("\033[1@\n", 1);
+//      	ft_putstr_ftstr_fd("\033[1@\n", 1);
 		minishell->term->cols = 1;
 		minishell->term->rows++;
 	}
@@ -120,6 +128,11 @@ int main() {
     ft_putstr_fd("1234567891234 :", 1);
     while (1) {
 		get_terminal_size(minishell->term);
+        if (minishell->term->rows > minishell->term->ws_rows)
+		{
+//			minishell->term->begin_rows = minishell->term->rows - minishell->term->ws_rows;
+			minishell->term->rows = minishell->term->ws_rows;
+		}
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 		if (bits == -1)
 		{

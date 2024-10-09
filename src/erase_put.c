@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void put_in_string(t_minishell *minishell, char *new)
+{
+  		ft_putstr_fd("EHEHEHEHEH", 1);
+                (void) minishell;
+                (void) new;
+
+}
+
 //static void	backspace_action(t_minishell *minishell)
 //{
 //    size_t	len;
