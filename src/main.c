@@ -82,6 +82,13 @@ int process_action(t_minishell *minishell, char *new)
 {
   	unsigned int	input_len = (unsigned int)ft_tablen((const char **)minishell->input);
 
+     if (new[0] == '\n')
+       {
+           ft_putstr_fd("\nEXIT\n", 1);
+			ft_putstr_fd(PROMPT, 1);
+           ft_putstr_fd(ft_utf8_tab_to_str(minishell->input), 1);
+           return (1);
+       }
 	if (new[0] == '\033')
     {
         interpret_escape_sequence(minishell, new);
@@ -96,11 +103,13 @@ int process_action(t_minishell *minishell, char *new)
         (minishell->term->rows - minishell->term->begin_rows != 0 &&  (minishell->term->rows * minishell->term->ws_cols - 1) - PROMPT_LEN + minishell->term->cols < input_len))
 	{
       	put_in_string(minishell, new);
-		return (0);
-     }
-	ft_putstr_fd(new, 1);
-	minishell->input = ft_tabjoin(minishell->input,
-				ft_utf8_split_chars(new));
+    }
+     else
+   	{
+		ft_putstr_fd(new, 1);
+		minishell->input = ft_tabjoin(minishell->input,
+			ft_utf8_split_chars(new));
+    }
     minishell->term->cols++;
     if (minishell->term->cols >= minishell->term->ws_cols)
 	{
@@ -125,7 +134,7 @@ int main() {
     // Configuration du mode raw pour la saisie clavier
     set_raw_mode(&old_attrs);
 
-    ft_putstr_fd("1234567891234 :", 1);
+    ft_putstr_fd(PROMPT, 1);
     while (1) {
 		get_terminal_size(minishell->term);
         if (minishell->term->rows > minishell->term->ws_rows)
@@ -147,7 +156,6 @@ int main() {
 		if (process_action(minishell, buffer))
 			break;
     }
-	printf("OUT");
 
     // Restauration des paramètres du terminal
     reset_terminal_mode(&old_attrs);

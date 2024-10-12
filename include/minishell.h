@@ -18,7 +18,8 @@
 #include "utils.h"
 
 
-#define PROMPT_LEN 15
+#define PROMPT_LEN 12
+#define PROMPT "\033[1;32mminishell$> \033[0m"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
