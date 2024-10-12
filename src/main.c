@@ -113,12 +113,10 @@ int process_action(t_minishell *minishell, char *new)
     minishell->term->cols++;
     if (minishell->term->cols >= minishell->term->ws_cols)
 	{
-//      	ft_putstr_ftstr_fd("\033[1@\n", 1);
+      	ft_putstr_fd("\n", 1);
 		minishell->term->cols = 1;
 		minishell->term->rows++;
 	}
-//	minishell->term->rows = (ft_tablen((const char **)minishell->input) + PROMPT_LEN)
-//		/ minishell->term->ws_cols + minishell->term->begin_rows;
 	return (0);
 }
 
@@ -131,17 +129,10 @@ int main() {
 	int signal;
 
 	minishell = alloc_minishell();
-    // Configuration du mode raw pour la saisie clavier
     set_raw_mode(&old_attrs);
-
     ft_putstr_fd(PROMPT, 1);
     while (1) {
 		get_terminal_size(minishell->term);
-        if (minishell->term->rows > minishell->term->ws_rows)
-		{
-//			minishell->term->begin_rows = minishell->term->rows - minishell->term->ws_rows;
-			minishell->term->rows = minishell->term->ws_rows;
-		}
 		bits = read(STDIN_FILENO, &buffer, sizeof(buffer));
 		if (bits == -1)
 		{
@@ -156,8 +147,6 @@ int main() {
 		if (process_action(minishell, buffer))
 			break;
     }
-
-    // Restauration des paramètres du terminal
     reset_terminal_mode(&old_attrs);
     return 0;
 }
