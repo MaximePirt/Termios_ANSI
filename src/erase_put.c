@@ -6,7 +6,7 @@
 /*   By: mpierrot <mpierrot@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 19:52:00 by mpierrot          #+#    #+#             */
-/*   Updated: 2024/10/11 23:51:50 by mpierrot         ###   ########.fr       */
+/*   Updated: 2024/10/12 20:53:28 by mpierrot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,54 +35,49 @@ void clear_term(t_minishell *minishell)
 			ft_putstr_fd("\033[K\033[1A", 1);
 			rows--;
 		}
-//	ft_putstr_fd("\033[K\033[1A", 1);
     ft_putstr_fd("\033[K", 1);
-//    ft_putstr_fd(PROMPT, 1);
-//   	printf("\033[%u;%uH", minishell->term->rows, minishell->term->cols);
-
 }
 
-char * adding_nl_in_str(char *str, unsigned int ws_cols, unsigned int prompt_len, unsigned int rows)
-{
-    char *res;
-    unsigned int i;
-    unsigned int j;
-    unsigned int k;
-
-    i = 0;
-    j = 0;
-    k = 0;
-    res = ft_calloc((ft_strlen(str) + 1 + rows), sizeof(char));
-    while (str[i])
-    {
-        if (rows == 0 && j == ws_cols - prompt_len)
-        {
-            res[k] = '\n';
-            k++;
-            rows++;
-            j = 0;
-        }
-        else if (rows != 0 && j == ws_cols)
-        {
-            res[k] = '\n';
-            k++;
-            rows++;
-            j = 0;
-        }
-        res[k] = str[i];
-        i++;
-        j++;
-        k++;
-    }
-    return (res);
-}
+//char * adding_nl_in_str(char *str, unsigned int ws_cols, unsigned int prompt_len, unsigned int rows)
+//{
+//    char *res;
+//    unsigned int i;
+//    unsigned int j;
+//    unsigned int k;
+//
+//    i = 0;
+//    j = 0;
+//    k = 0;
+//    res = ft_calloc((ft_strlen(str) + 1 + rows), sizeof(char));
+//    while (str[i])
+//    {
+//        if (rows == 0 && j == ws_cols - prompt_len)
+//        {
+//            res[k] = '\n';
+//            k++;
+//            rows++;
+//            j = 0;
+//        }
+//        else if (rows != 0 && j == ws_cols)
+//        {
+//            res[k] = '\n';
+//            k++;
+//            rows++;
+//            j = 0;
+//        }
+//        res[k] = str[i];
+//        i++;
+//        j++;
+//        k++;
+//    }
+//    return (res);
+//}
 
 void put_in_string(t_minishell *minishell, char *new)
 {
     unsigned int current_cols;
     unsigned int current_rows;
     unsigned int tablen;
-    char *tmp;
 
     current_cols = minishell->term->cols;
     current_rows = minishell->term->rows;
@@ -92,29 +87,17 @@ void put_in_string(t_minishell *minishell, char *new)
 	{
 		minishell->input = ft_tabinsert(minishell->input, new,
 			minishell->term->cols - PROMPT_LEN - 1);
-        tmp = adding_nl_in_str(ft_utf8_tab_to_str(minishell->input), minishell->term->ws_cols, PROMPT_LEN, 0);
         clear_term(minishell);
 		ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (minishell->term->cols - PROMPT_LEN - 1), STDOUT_FILENO);
-        free(tmp);
 	}
     else
     {
         minishell->input = ft_tabinsert(minishell->input, new,
-            (current_rows * minishell->term->ws_cols - 1) - PROMPT_LEN + current_cols -1);
-        tmp = adding_nl_in_str(ft_utf8_tab_to_str(minishell->input), minishell->term->ws_cols, PROMPT_LEN, current_rows - minishell->term->begin_rows);
-//        if (current_rows - minishell->term->begin_rows == 1)
-//		{
-            minishell->term->rows--;
+            (current_rows * minishell->term->ws_cols) - PROMPT_LEN + current_cols - 2);
+            minishell->term->rows -= current_rows - minishell->term->begin_rows;
             clear_term(minishell);
-            minishell->term->rows++;
-//        }
-//        else
-//            clear_term(minishell);
+            minishell->term->rows += current_rows - minishell->term->begin_rows;
         ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (current_rows * minishell->term->ws_cols - 1) - PROMPT_LEN + current_cols -1, STDOUT_FILENO);
-        free(tmp);
-
-//        ft_putstr_fd("\033[J", 1);
-//		ft_putstr_fd(ft_utf8_tab_to_str(minishell->input) + (current_rows * minishell->term->ws_cols - 1) - PROMPT_LEN + current_cols -1, STDOUT_FILENO);
     }
     tablen = ft_tablen((const char **)minishell->input);
     while (tablen  + PROMPT_LEN > minishell->term->ws_cols)
@@ -122,10 +105,7 @@ void put_in_string(t_minishell *minishell, char *new)
 
         ft_putstr_fd("\033[A\r", 1);
         tablen = tablen - minishell->term->ws_cols;
-//		fprintf(stderr, "\033[%dA\r", (unsigned int)ft_tablen((const char **) minishell->input) + PROMPT_LEN / minishell->term->ws_cols + 1);
       }
-//    if (minishell->term->cols + 1 > minishell->term->ws_cols)
-//      ft_putstr_fd("\033[F", 1);
     ft_putstr_fd("\033[u\033[1C", 1);
 
 }

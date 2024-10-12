@@ -94,12 +94,7 @@ int process_action(t_minishell *minishell, char *new)
         interpret_escape_sequence(minishell, new);
         return (0);
 	}
-    else if (strcmp(new, " ") == 0)
-    {
-    	printf("vla cols : %u et rows %u\n", minishell->term->cols, minishell->term->rows);
-        return (0);
-    }
-	if ((minishell->term->rows - minishell->term->begin_rows == 0 && minishell->term->cols - PROMPT_LEN < input_len + 1 )||
+    else if ((minishell->term->rows - minishell->term->begin_rows == 0 && minishell->term->cols - PROMPT_LEN < input_len + 1 )||
         (minishell->term->rows - minishell->term->begin_rows != 0 &&  (minishell->term->rows * minishell->term->ws_cols - 1) - PROMPT_LEN + minishell->term->cols < input_len))
 	{
       	put_in_string(minishell, new);
@@ -111,7 +106,7 @@ int process_action(t_minishell *minishell, char *new)
 			ft_utf8_split_chars(new));
     }
     minishell->term->cols++;
-    if (minishell->term->cols >= minishell->term->ws_cols)
+    if (minishell->term->cols >= minishell->term->ws_cols + 1)
 	{
       	ft_putstr_fd("\n", 1);
 		minishell->term->cols = 1;

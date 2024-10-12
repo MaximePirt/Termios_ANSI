@@ -31,7 +31,7 @@ void move_cursor_right(t_minishell *minishell)
 
   if (term->rows - term->begin_rows == 0 && term->cols - PROMPT_LEN >= input_len + 1)
 	return ;
-  else if (term->rows - term->begin_rows != 0 &&  (term->rows * term->ws_cols - 1) - PROMPT_LEN + term->cols >= input_len)
+  else if (term->rows - term->begin_rows != 0 &&  (term->rows * term->ws_cols - 1) - PROMPT_LEN + term->cols >= input_len + 1)
 	return ;
   if (term->cols >= term->ws_cols)
 	{
